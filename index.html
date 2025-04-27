@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro de Análise de Leite</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      width: 90%;
+      max-width: 500px;
+      margin: 30px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+    label {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    input, button {
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      margin-top: 20px;
+      background: #28a745;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #218838;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Análise de Leite</h1>
+  <form id="formularioLeite">
+    <label for="data">Data:</label>
+    <input type="date" id="data" name="data" required>
+
+    <label for="nome">Nome:</label>
+    <input type="text" id="nome" name="nome" required>
+
+    <label for="gordura">Gordura (%):</label>
+    <input type="number" id="gordura" name="gordura" step="0.01" required>
+
+    <label for="proteina">Proteína (%):</label>
+    <input type="number" id="proteina" name="proteina" step="0.01" required>
+
+    <label for="lactose">Lactose (%):</label>
+    <input type="number" id="lactose" name="lactose" step="0.01" required>
+
+    <label for="solidos">Sólidos Totais (%):</label>
+    <input type="number" id="solidos" name="solidos" step="0.01" required>
+
+    <label for="ureia">Ureia (mg/dL):</label>
+    <input type="number" id="ureia" name="ureia" step="0.01" required>
+
+    <label for="ccs">CCS (x1000 células/mL):</label>
+    <input type="number" id="ccs" name="ccs" required>
+
+    <button type="submit">Enviar</button>
+  </form>
+</div>
+
+<script>
+  document.getElementById('formularioLeite').addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    const formData = {
+      data: document.getElementById('data').value,
+      nome: document.getElementById('nome').value,
+      gordura: document.getElementById('gordura').value,
+      proteina: document.getElementById('proteina').value,
+      lactose: document.getElementById('lactose').value,
+      solidos: document.getElementById('solidos').value,
+      ureia: document.getElementById('ureia').value,
+      ccs: document.getElementById('ccs').value
+    };
+
+    try {
+      const response = await fetch('URL_DO_SEU_SCRIPT', {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+
+      alert('Dados enviados com sucesso!');
+      document.getElementById('formularioLeite').reset();
+    } catch (error) {
+      alert('Erro ao enviar os dados!');
+      console.error(error);
+    }
+  });
+</script>
+
+</body>
+</html>
