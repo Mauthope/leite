@@ -91,10 +91,11 @@
     localStorage.setItem('milkFormData', JSON.stringify(storedData));
   }
 
-  // Função para enviar os dados para o Google Sheets
-  function sendMilkDataToGoogleSheets(formData) {
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbw0FiB1DnOV9rcge1j5ka7k3lypAiMQUsjx2d6la3s3Jjic7wwKaMUfnkz-LKDrX4_1/exec'; // Substitua pela URL do seu Apps Script
-
+  // Função para enviar os dados para o Google Sheets (via API)
+    function sendToGoogleSheets(formData) {
+      // ID da planilha e URL do script do Google Apps
+      const sheetID = '1ysRrJUGmRdhtdDnIYnfgqjjHlOKJcfs-ZaluszchxAw'; // Substitua com o ID da sua planilha
+      const scriptURL = `https://script.google.com/macros/s/AKfycbw0FiB1DnOV9rcge1j5ka7k3lypAiMQUsjx2d6la3s3Jjic7wwKaMUfnkz-LKDrX4_1/exec`;
     fetch(scriptURL, {
       method: 'POST',
       headers: {
