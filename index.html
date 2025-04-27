@@ -2,120 +2,190 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cadastro de Análise de Leite</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Formulário de Propriedades</title>
+
+  <!-- Biblioteca XLSX para ler planilhas Excel -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #f9f9f9;
-      margin: 0;
-      padding: 0;
-    }
-    .container {
-      width: 90%;
-      max-width: 500px;
-      margin: 30px auto;
-      padding: 20px;
-      background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    }
-    h1 {
-      text-align: center;
-      color: #333;
+      margin: 20px;
     }
     form {
-      display: flex;
-      flex-direction: column;
+      margin-bottom: 20px;
     }
     label {
+      display: block;
       margin-top: 10px;
       font-weight: bold;
     }
-    input, button {
-      padding: 10px;
+    input[type="text"], input[type="file"] {
+      width: 100%;
+      padding: 8px;
       margin-top: 5px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
     }
     button {
-      margin-top: 20px;
-      background: #28a745;
-      color: white;
-      border: none;
+      margin-top: 15px;
+      padding: 10px 20px;
+      font-size: 16px;
       cursor: pointer;
     }
-    button:hover {
-      background: #218838;
+    #message {
+      margin-top: 20px;
+      font-size: 18px;
+      color: green;
+      font-weight: bold;
     }
   </style>
 </head>
+
 <body>
 
-<div class="container">
-  <h1>Análise de Leite</h1>
-  <form id="formularioLeite">
+  <h1>Cadastro de Propriedade</h1>
+
+  <form id="propriedadeForm">
     <label for="data">Data:</label>
-    <input type="date" id="data" name="data" required>
+    <input type="text" id="data" name="data" required>
 
     <label for="nome">Nome:</label>
     <input type="text" id="nome" name="nome" required>
 
-    <label for="gordura">Gordura (%):</label>
-    <input type="number" id="gordura" name="gordura" step="0.01" required>
+    <label for="gordura">Gordura:</label>
+    <input type="text" id="gordura" name="gordura" required>
 
-    <label for="proteina">Proteína (%):</label>
-    <input type="number" id="proteina" name="proteina" step="0.01" required>
+    <label for="proteina">Proteína:</label>
+    <input type="text" id="proteina" name="proteina" required>
 
-    <label for="lactose">Lactose (%):</label>
-    <input type="number" id="lactose" name="lactose" step="0.01" required>
+    <label for="lactose">Lactose:</label>
+    <input type="text" id="lactose" name="lactose" required>
 
-    <label for="solidos">Sólidos Totais (%):</label>
-    <input type="number" id="solidos" name="solidos" step="0.01" required>
+    <label for="solidos">Sólidos Totais:</label>
+    <input type="text" id="solidos" name="solidos" required>
 
-    <label for="ureia">Ureia (mg/dL):</label>
-    <input type="number" id="ureia" name="ureia" step="0.01" required>
+    <label for="ureia">Ureia:</label>
+    <input type="text" id="ureia" name="ureia" required>
 
-    <label for="ccs">CCS (x1000 células/mL):</label>
-    <input type="number" id="ccs" name="ccs" required>
+    <label for="ccs">CCS:</label>
+    <input type="text" id="ccs" name="ccs" required>
 
     <button type="submit">Enviar</button>
   </form>
-</div>
 
-<script>
-  document.getElementById('formularioLeite').addEventListener('submit', async function(event) {
-    event.preventDefault();
+  <h2>Importar Dados do Excel</h2>
 
-    const formData = {
-      data: document.getElementById('data').value,
-      nome: document.getElementById('nome').value,
-      gordura: document.getElementById('gordura').value,
-      proteina: document.getElementById('proteina').value,
-      lactose: document.getElementById('lactose').value,
-      solidos: document.getElementById('solidos').value,
-      ureia: document.getElementById('ureia').value,
-      ccs: document.getElementById('ccs').value
-    };
+  <input type="file" id="excelFile" accept=".xlsx, .xls">
+  <button id="importExcel">Importar</button>
 
-    try {
-      const response = await fetch('URL_DO_SEU_SCRIPT', {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
+  <p id="message" style="display:none;"></p>
+
+  <script>
+    // ID da planilha (somente referência, não usado diretamente aqui)
+    const sheetID = '1gpgYrvpDkclasMPR3CLRSZ3cx2CSHWVlpSf0NcG40wA'; 
+
+    // URL do script do Google Apps Script para envio dos dados
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbyDurHrR0y5q_7kpe9G4Gtyw9qVjMTgDCFEisX1T5QgcnVkq79e__cxhV3Qt6IW_Z2Q9w/exec';
+
+    // Função para armazenar os dados no localStorage
+    function saveFormData() {
+      const formData = {};
+      const form = document.getElementById('propriedadeForm');
+      const inputs = form.querySelectorAll('input');
+      inputs.forEach(input => {
+        formData[input.name] = input.value;
       });
 
-      alert('Dados enviados com sucesso!');
-      document.getElementById('formularioLeite').reset();
-    } catch (error) {
-      alert('Erro ao enviar os dados!');
-      console.error(error);
+      const storedData = JSON.parse(localStorage.getItem('formData')) || [];
+      storedData.push(formData);
+      localStorage.setItem('formData', JSON.stringify(storedData));
     }
-  });
-</script>
+
+    // Função para enviar os dados para o Google Sheets
+    function sendToGoogleSheets(formData) {
+      fetch(scriptURL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams(formData)
+      })
+      .then(response => {
+        if (response.ok) {
+          alert('Dados enviados com sucesso!');
+        } else {
+          alert('Erro ao enviar dados');
+        }
+      })
+      .catch(error => {
+        alert('Erro ao enviar dados: ' + error.message);
+      });
+    }
+
+    // Captura o envio do formulário
+    document.getElementById('propriedadeForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const formData = {};
+      const inputs = this.querySelectorAll('input');
+      inputs.forEach(input => {
+        formData[input.name] = input.value;
+      });
+
+      saveFormData();
+      sendToGoogleSheets(formData);
+    });
+
+    // Função para importar Excel
+    document.getElementById('importExcel').addEventListener('click', function() {
+      const fileInput = document.getElementById('excelFile');
+      const file = fileInput.files[0];
+      const messageElement = document.getElementById('message');
+
+      if (!file) {
+        alert('Por favor, selecione uma planilha.');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const data = new Uint8Array(e.target.result);
+          const workbook = XLSX.read(data, { type: 'array' });
+          const sheetName = workbook.SheetNames[0];
+          const sheet = workbook.Sheets[sheetName];
+
+          const mapping = {
+            'A1': 'data',      // Exemplo: ajuste as células corretas conforme seu arquivo Excel
+            'B1': 'nome',
+            'C1': 'gordura',
+            'D1': 'proteina',
+            'E1': 'lactose',
+            'F1': 'solidos',
+            'G1': 'ureia',
+            'H1': 'ccs'
+          };
+
+          for (const [cell, fieldId] of Object.entries(mapping)) {
+            const cellValue = sheet[cell]?.v;
+            const field = document.getElementById(fieldId);
+
+            if (field && cellValue !== undefined) {
+              field.value = cellValue;
+            }
+          }
+
+          messageElement.textContent = 'Dados carregados com sucesso!';
+          messageElement.style.display = 'block';
+        } catch (error) {
+          console.error('Erro ao processar a planilha:', error);
+          alert('Erro ao processar a planilha. Verifique o arquivo e tente novamente.');
+        }
+      };
+
+      reader.readAsArrayBuffer(file);
+    });
+  </script>
 
 </body>
 </html>
