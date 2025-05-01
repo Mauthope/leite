@@ -83,96 +83,64 @@
   </form>
 </div>
 
-  <script>
+<script>
+  function saveFormData() {
+    const formData = {
+      data: document.getElementById('data').value,
+      nome: document.getElementById('nome').value,
+      gordura: document.getElementById('gordura').value,
+      proteina: document.getElementById('proteina').value,
+      lactose: document.getElementById('lactose').value,
+      solidos: document.getElementById('solidos').value,
+      urei: document.getElementById('ureia').value,
+      ccs: document.getElementById('ccs').value,
+    };
 
-
-    // Função para armazenar os dados no localStorage
-    function saveFormData() {
-      const formData = {
-        data: document.getElementById('data').value,
-        nome: document.getElementById('nome').value,
-        gordura: document.getElementById('gordura').value,
-        proteina: document.getElementById('proteina').value,
-        lactose: document.getElementById('lactose').value,
-        solidos: document.getElementById('solidos').value,
-        urei: document.getElementById('ureia').value,
-        ccs: document.getElementById('ccs').value,
-       
-      };
-
-      const storedData = JSON.parse(localStorage.getItem('formData')) || [];
-      storedData.push(formData);
-      localStorage.setItem('formData', JSON.stringify(storedData));
-    }
-
-    // Função para enviar os dados para o Google Sheets (via API)
-
-function sendToGoogleSheets(formData) {
-  // Verifica se a geolocalização está disponível
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(function(position) {
-      // Obtém as coordenadas
-      const latitude = position.coords.latitude;
-      const longitude = position.coords.longitude;
-
-      // Adiciona as coordenadas ao objeto formData
-      formData.latitude = latitude;
-      formData.longitude = longitude;
-
-      // ID da planilha e URL do script do Google Apps
-      const sheetID = '1ysRrJUGmRdhtdDnIYnfgqjjHlOKJcfs-ZaluszchxAw'; // Substitua com o ID da sua planilha
-      const scriptURL = `https://script.google.com/macros/s/AKfycbw0FiB1DnOV9rcge1j5ka7k3lypAiMQUsjx2d6la3s3Jjic7wwKaMUfnkz-LKDrX4_1/exec`;
-
-      // Envia os dados via POST
-      fetch(scriptURL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: new URLSearchParams(formData)
-      })
-        .then(response => {
-          if (response.ok) {
-            alert('Dados enviados com sucesso!');
-          } else {
-            alert('Erro ao enviar dados');
-          }
-        })
-        .catch(error => {
-          alert('Erro ao enviar dados: ' + error.message);
-        });
-    }, function(error) {
-      alert('Erro ao obter localização: ' + error.message);
-    });
-  } else {
-    alert('Geolocalização não é suportada neste navegador.');
+    const storedData = JSON.parse(localStorage.getItem('formData')) || [];
+    storedData.push(formData);
+    localStorage.setItem('formData', JSON.stringify(storedData));
   }
-}
 
+  function sendToGoogleSheets(formData) {
+    const scriptURL = `https://script.google.com/macros/s/AKfycbw0FiB1DnOV9rcge1j5ka7k3lypAiMQUsjx2d6la3s3Jjic7wwKaMUfnkz-LKDrX4_1/exec`;
 
-    // Envia os dados ao submeter o formulário
-    document.getElementById('propriedadeForm').addEventListener('submit', function(event) {
-      event.preventDefault();
-
-      const formData = {
-        data: document.getElementById('data').value,
-        nome: document.getElementById('nome').value,
-        gordura: document.getElementById('gordura').value,
-        proteina: document.getElementById('proteina').value,
-        lactose: document.getElementById('lactose').value,
-        solidos: document.getElementById('solidos').value,
-        urei: document.getElementById('ureia').value,
-        ccs: document.getElementById('ccs').value,
-        
-      };
-
-      // Armazenar os dados offline e enviar para o Google Sheets
-      saveFormData();
-      sendToGoogleSheets(formData);
+    fetch(scriptURL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: new URLSearchParams(formData)
+    })
+    .then(response => {
+      if (response.ok) {
+        alert('Dados enviados com sucesso!');
+      } else {
+        alert('Erro ao enviar dados');
+      }
+    })
+    .catch(error => {
+      alert('Erro ao enviar dados: ' + error.message);
     });
-  </script>
+  }
 
+  document.getElementById('formularioLeite').addEventListener('submit', function(event) {
+    event.preventDefault();
 
+    const formData = {
+      data: document.getElementById('data').value,
+      nome: document.getElementById('nome').value,
+      gordura: document.getElementById('gordura').value,
+      proteina: document.getElementById('proteina').value,
+      lactose: document.getElementById('lactose').value,
+      solidos: document.getElementById('solidos').value,
+      urei: document.getElementById('ureia').value,
+      ccs: document.getElementById('ccs').value,
+    };
+
+    saveFormData();
+    sendToGoogleSheets(formData);
+  });
+</script>
 
 </body>
 </html>
