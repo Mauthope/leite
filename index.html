@@ -2,43 +2,305 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Formulário com LocalStorage e Google Sheets</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulário com Localização</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      width: 80%;
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    input, select, button {
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      margin-top: 20px;
+      background: #5cb85c;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #4cae4c;
+    }
+
+    #map {
+      margin-top: 15px;
+      width: 100%;
+      height: 300px;
+      display: none;
+    }
+  </style>
 </head>
 <body>
-  <h2>Formulário de Contato</h2>
-  <form id="meuFormulario">
-    <label>Nome: <input type="text" id="nome" required></label><br>
-    <label>Email: <input type="email" id="email" required></label><br>
-    <label>Mensagem:<br><textarea id="mensagem" required></textarea></label><br>
-    <button type="submit">Enviar</button>
-  </form>
+  <div class="container">
+     <div style="text-align: center; margin-bottom: 20px;">
+    <img src="https://th.bing.com/th/id/R.1d28d53e94518beab66fcea9aa29ba6d?rik=omvtwv5JhZw7Xw&riu=http%3a%2f%2ffrigorificoarvoredo.com.br%2fblog%2fwp-content%2fthemes%2f2op%2fimages%2farvoredo-facebook.jpg&ehk=eRCT9QZH2qJskR3EC4yypW2NHrWR1hbo6zflcj6F804%3d&risl=&pid=ImgRaw&r=0" alt="Imagem" style="max-width: 100%; height: auto;">
+  </div>
+    <h1>Formulário com Localização</h1>
+    <form id="propriedadeForm">
+      <label for="nomePropriedade">Nome da Propriedade:</label>
+      <input type="text" id="nomePropriedade" name="nomePropriedade" required>
+
+      <label for="dataVisita">Data da Visita:</label>
+      <input type="date" id="dataVisita" name="dataVisita" required>
+      
+      <label for="producaoLeite">Produção de Leite (L):</label>
+      <input type="number" id="producaoLeite" name="producaoLeite" required>
+
+      <label for="vacasLactacao">Número de Vacas em Lactação:</label>
+      <input type="number" id="vacasLactacao" name="vacasLactacao" required>
+
+      <label for="quantPrimiparas">Quantidade de Primíparas:</label>
+      <input type="number" id="quantPrimiparas" name="quantPrimiparas" required>
+
+      <label for="mediaLeite">Média de Leite (L):</label>
+      <input type="number" id="mediaLeite" name="mediaLeite" step="0.1" required>
+
+      <fieldset>
+        <legend>Lotes</legend>
+        <label for="lote1">Lote 1 (quantas vacas):</label>
+        <input type="number" id="lote1" name="lote1" required>
+
+        <label for="lote2">Lote 2 (quantas vacas):</label>
+        <input type="number" id="lote2" name="lote2" required>
+
+        <label for="lote3">Lote 3 (quantas vacas):</label>
+        <input type="number" id="lote3" name="lote3" required>
+      </fieldset>
+
+      <label for="delMedio">Del Médio (dias):</label>
+      <input type="number" id="delMedio" name="delMedio" required>
+
+      <label for="tmrComposicao">TMR Composição:</label>
+      <input type="text" id="tmrComposicao" name="tmrComposicao" required>
+
+      <label for="kgSilagem">Quantos kg de Silagem:</label>
+      <input type="number" id="kgSilagem" name="kgSilagem" step="0.1" required>
+
+      <label for="kgFeno">Quantos kg de Feno:</label>
+      <input type="number" id="kgFeno" name="kgFeno" step="0.1" required>
+
+      <label for="kgPreSecado">Quantos kg de Pré-secado:</label>
+      <input type="number" id="kgPreSecado" name="kgPreSecado" step="0.1" required>
+
+      <label for="kgRacao">Quantos kg de Ração:</label>
+      <input type="number" id="kgRacao" name="kgRacao" step="0.1" required>
+
+      <label for="sobrasCoxo">Quantidade de Sobras no Cocho:</label>
+      <input type="number" id="sobrasCoxo" name="sobrasCoxo" step="0.1" required>
+
+      <label for="tempoSilagem">Tempo disponível de Silagem, Feno e Pré-secado (dias):</label>
+      <input type="number" id="tempoSilagem" name="tempoSilagem" required>
+
+      <label for="vacasPreParto">Número de Vacas em Pré-parto:</label>
+      <input type="number" id="vacasPreParto" name="vacasPreParto" required>
+
+      <label for="dietaPreParto">Dieta no Pré-parto:</label>
+      <select id="dietaPreParto" name="dietaPreParto" required>
+        <option value="sim">Sim</option>
+        <option value="nao">Não</option>
+      </select>
+
+      <label for="escoreCocho">Escore de Cocho:</label>
+      <input type="number" id="escoreCocho" name="escoreCocho" step="0.1" required>
+
+      <label for="escoreCorporal">Escore Condição Corporal:</label>
+      <input type="number" id="escoreCorporal" name="escoreCorporal" step="0.1" required>
+
+      <!-- Campo para localização -->
+      <label>Localização da Propriedade:</label>
+      <button type="button" id="getLocation">Adicionar Localização</button>
+      <div id="map"></div>
+
+      <button type="submit">Enviar</button>
+    </form>
+  </div>
 
   <script>
-    const form = document.getElementById('meuFormulario');
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbw0FiB1DnOV9rcge1j5ka7k3lypAiMQUsjx2d6la3s3Jjic7wwKaMUfnkz-LKDrX4_1/exec'; // Substitua com a URL gerada
+    const getLocationButton = document.getElementById('getLocation');
+    const mapDiv = document.getElementById('map');
 
-    form.addEventListener('submit', function(event) {
-      event.preventDefault();
+    getLocationButton.addEventListener('click', () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition, showError);
+      } else {
+        alert('Geolocalização não é suportada pelo seu navegador.');
+      }
+    });
 
-      const dados = {
-        nome: document.getElementById('nome').value,
-        email: document.getElementById('email').value,
-        mensagem: document.getElementById('mensagem').value
+    function showPosition(position) {
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
+
+      // Exibe o mapa
+      mapDiv.style.display = 'block';
+      mapDiv.innerHTML = `<iframe 
+        width="100%" 
+        height="100%" 
+        frameborder="0" 
+        style="border:0" 
+        src="https://www.google.com/maps?q=${latitude},${longitude}&z=15&output=embed">
+      </iframe>`;
+    }
+
+    function showError(error) {
+      switch (error.code) {
+        case error.PERMISSION_DENIED:
+          alert('Usuário negou a permissão de localização.');
+          break;
+        case error.POSITION_UNAVAILABLE:
+          alert('Informações de localização estão indisponíveis.');
+          break;
+        case error.TIMEOUT:
+          alert('A requisição de localização demorou muito.');
+          break;
+        case error.UNKNOWN_ERROR:
+          alert('Ocorreu um erro desconhecido.');
+          break;
+      }
+    }
+
+    // Função para armazenar os dados no localStorage
+    function saveFormData() {
+      const formData = {
+        nomePropriedade: document.getElementById('nomePropriedade').value,
+        dataVisita: document.getElementById('dataVisita').value,
+        producaoLeite: document.getElementById('producaoLeite').value,
+        vacasLactacao: document.getElementById('vacasLactacao').value,
+        quantPrimiparas: document.getElementById('quantPrimiparas').value,
+        mediaLeite: document.getElementById('mediaLeite').value,
+        lote1: document.getElementById('lote1').value,
+        lote2: document.getElementById('lote2').value,
+        lote3: document.getElementById('lote3').value,
+        delMedio: document.getElementById('delMedio').value,
+        tmrComposicao: document.getElementById('tmrComposicao').value,
+        kgSilagem: document.getElementById('kgSilagem').value,
+        kgFeno: document.getElementById('kgFeno').value,
+        kgPreSecado: document.getElementById('kgPreSecado').value,
+        kgRacao: document.getElementById('kgRacao').value,
+        sobrasCoxo: document.getElementById('sobrasCoxo').value,
+        tempoSilagem: document.getElementById('tempoSilagem').value,
+        vacasPreParto: document.getElementById('vacasPreParto').value,
+        dietaPreParto: document.getElementById('dietaPreParto').value,
+        escoreCocho: document.getElementById('escoreCocho').value,
+        escoreCorporal: document.getElementById('escoreCorporal').value,
       };
 
-      // Salva no localStorage
-      localStorage.setItem('formularioDados', JSON.stringify(dados));
+      const storedData = JSON.parse(localStorage.getItem('formData')) || [];
+      storedData.push(formData);
+      localStorage.setItem('formData', JSON.stringify(storedData));
+    }
 
-      // Envia para o Google Sheets
+    // Função para enviar os dados para o Google Sheets (via API)
+  // Função para enviar os dados para o Google Sheets (via API)
+function sendToGoogleSheets(formData) {
+  // Verifica se a geolocalização está disponível
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      // Obtém as coordenadas
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
+
+      // Adiciona as coordenadas ao objeto formData
+      formData.latitude = latitude;
+      formData.longitude = longitude;
+
+      // ID da planilha e URL do script do Google Apps
+      const sheetID = '1F-BudKkExs65hQuWLNQN3UPrl_J0xP0Uf4fF0piijL4'; // Substitua com o ID da sua planilha
+      const scriptURL = `https://script.google.com/macros/s/AKfycbwkt_tCIDrTLA-xCdckpviRPLGwM_kg1MmxpjhIlqnD-Qur_4zu9vDCm3L2Al0L7owi/exec`;
+
+      // Envia os dados via POST
       fetch(scriptURL, {
         method: 'POST',
-        body: JSON.stringify(dados),
         headers: {
-          'Content-Type': 'application/json'
-        }
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams(formData)
       })
-      .then(response => alert('Dados enviados com sucesso!'))
-      .catch(error => alert('Erro ao enviar dados: ' + error.message));
+        .then(response => {
+          if (response.ok) {
+            alert('Dados enviados com sucesso!');
+          } else {
+            alert('Erro ao enviar dados');
+          }
+        })
+        .catch(error => {
+          alert('Erro ao enviar dados: ' + error.message);
+        });
+    }, function(error) {
+      alert('Erro ao obter localização: ' + error.message);
+    });
+  } else {
+    alert('Geolocalização não é suportada neste navegador.');
+  }
+}
+
+
+    // Envia os dados ao submeter o formulário
+    document.getElementById('propriedadeForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const formData = {
+        nomePropriedade: document.getElementById('nomePropriedade').value,
+        dataVisita: document.getElementById('dataVisita').value,
+        producaoLeite: document.getElementById('producaoLeite').value,
+        vacasLactacao: document.getElementById('vacasLactacao').value,
+        quantPrimiparas: document.getElementById('quantPrimiparas').value,
+        mediaLeite: document.getElementById('mediaLeite').value,
+        lote1: document.getElementById('lote1').value,
+        lote2: document.getElementById('lote2').value,
+        lote3: document.getElementById('lote3').value,
+        delMedio: document.getElementById('delMedio').value,
+        tmrComposicao: document.getElementById('tmrComposicao').value,
+        kgSilagem: document.getElementById('kgSilagem').value,
+        kgFeno: document.getElementById('kgFeno').value,
+        kgPreSecado: document.getElementById('kgPreSecado').value,
+        kgRacao: document.getElementById('kgRacao').value,
+        sobrasCoxo: document.getElementById('sobrasCoxo').value,
+        tempoSilagem: document.getElementById('tempoSilagem').value,
+        vacasPreParto: document.getElementById('vacasPreParto').value,
+        dietaPreParto: document.getElementById('dietaPreParto').value,
+        escoreCocho: document.getElementById('escoreCocho').value,
+        escoreCorporal: document.getElementById('escoreCorporal').value,
+      };
+
+      // Armazenar os dados offline e enviar para o Google Sheets
+      saveFormData();
+      sendToGoogleSheets(formData);
     });
   </script>
 </body>
