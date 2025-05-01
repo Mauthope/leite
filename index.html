@@ -84,56 +84,52 @@
 </div>
 
 <script>
-  // Função para salvar os dados no localStorage
+  // Função para salvar no localStorage (opcional)
   function saveMilkData(formData) {
-    const storedData = JSON.parse(localStorage.getItem('milkFormData')) || [];
-    storedData.push(formData);
-    localStorage.setItem('milkFormData', JSON.stringify(storedData));
+    const stored = JSON.parse(localStorage.getItem('milkFormData')) || [];
+    stored.push(formData);
+    localStorage.setItem('milkFormData', JSON.stringify(stored));
   }
 
-  // Função para enviar os dados para o Google Sheets (via API)
-    function sendToGoogleSheets(formData) {
-      // ID da planilha e URL do script do Google Apps
-      const sheetID = '1ysRrJUGmRdhtdDnIYnfgqjjHlOKJcfs-ZaluszchxAw'; // Substitua com o ID da sua planilha
-      const scriptURL = `https://script.google.com/macros/s/AKfycbw0FiB1DnOV9rcge1j5ka7k3lypAiMQUsjx2d6la3s3Jjic7wwKaMUfnkz-LKDrX4_1/exec`;
+  // Função para enviar ao Google Sheets
+  function sendToGoogleSheets(formData) {
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbw0FiB1DnOV9rcge1j5ka7k3lypAiMQUsjx2d6la3s3Jjic7wwKaMUfnkz-LKDrX4_1/exec';  // <<— Cole aqui a URL do deploy
     fetch(scriptURL, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: new URLSearchParams(formData)
     })
-    .then(response => {
-      if (response.ok) {
+    .then(res => res.json())
+    .then(json => {
+      if (json.result === 'success') {
         alert('Dados enviados com sucesso!');
       } else {
-        alert('Erro ao enviar dados.');
+        alert('Erro no envio: ' + JSON.stringify(json.error));
       }
     })
-    .catch(error => {
-      alert('Erro ao enviar dados: ' + error.message);
+    .catch(err => {
+      alert('Falha ao conectar: ' + err);
     });
   }
 
-  // Evento de envio do formulário
-  document.getElementById('formularioLeite').addEventListener('submit', function(event) {
-    event.preventDefault();
-
-    const formData = {
-      data: document.getElementById('data').value,
-      nome: document.getElementById('nome').value,
-      gordura: document.getElementById('gordura').value,
-      proteina: document.getElementById('proteina').value,
-      lactose: document.getElementById('lactose').value,
-      solidos: document.getElementById('solidos').value,
-      ureia: document.getElementById('ureia').value,
-      ccs: document.getElementById('ccs').value
-    };
-
-    saveMilkData(formData);           // Salva no localStorage
-    sendMilkDataToGoogleSheets(formData); // Envia para o Google Sheets
-    document.getElementById('formularioLeite').reset(); // Reseta o formulário
-  });
+  // Listener do form
+  document.getElementById('formularioLeite')
+    .addEventListener('submit', function(event) {
+      event.preventDefault();
+      const data = {
+        data:    this.data.value,
+        nome:    this.nome.value,
+        gordura:this.gordura.value,
+        proteina:this.proteina.value,
+        lactose:this.lactose.value,
+        solidos:this.solidos.value,
+        ureia:   this.ureia.value,
+        ccs:     this.ccs.value
+      };
+      saveMilkData(data);
+      sendToGoogleSheets(data);
+      this.reset();
+    });
 </script>
 
 
