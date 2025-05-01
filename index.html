@@ -84,48 +84,7 @@
 </div>
 
   <script>
-    const getLocationButton = document.getElementById('getLocation');
-    const mapDiv = document.getElementById('map');
 
-    getLocationButton.addEventListener('click', () => {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition, showError);
-      } else {
-        alert('Geolocalização não é suportada pelo seu navegador.');
-      }
-    });
-
-    function showPosition(position) {
-      const latitude = position.coords.latitude;
-      const longitude = position.coords.longitude;
-
-      // Exibe o mapa
-      mapDiv.style.display = 'block';
-      mapDiv.innerHTML = `<iframe 
-        width="100%" 
-        height="100%" 
-        frameborder="0" 
-        style="border:0" 
-        src="https://www.google.com/maps?q=${latitude},${longitude}&z=15&output=embed">
-      </iframe>`;
-    }
-
-    function showError(error) {
-      switch (error.code) {
-        case error.PERMISSION_DENIED:
-          alert('Usuário negou a permissão de localização.');
-          break;
-        case error.POSITION_UNAVAILABLE:
-          alert('Informações de localização estão indisponíveis.');
-          break;
-        case error.TIMEOUT:
-          alert('A requisição de localização demorou muito.');
-          break;
-        case error.UNKNOWN_ERROR:
-          alert('Ocorreu um erro desconhecido.');
-          break;
-      }
-    }
 
     // Função para armazenar os dados no localStorage
     function saveFormData() {
@@ -147,7 +106,7 @@
     }
 
     // Função para enviar os dados para o Google Sheets (via API)
-  // Função para enviar os dados para o Google Sheets (via API)
+
 function sendToGoogleSheets(formData) {
   // Verifica se a geolocalização está disponível
   if (navigator.geolocation) {
