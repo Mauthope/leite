@@ -121,9 +121,9 @@
     localStorage.setItem('formData', JSON.stringify(storedData));
   }
 
-  // Função para enviar os dados para o Google Sheets (via API)
-  function sendToGoogleSheets(formData) {
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbzcJtLFaQq-IOpFJNvZjt3SiovS81baesJZTpZqSvmWmuU81KtitSUmmOAbqsOGjSqv/exec';
+  // ID da planilha e URL do script do Google Apps
+      const sheetID = '1ysRrJUGmRdhtdDnIYnfgqjjHlOKJcfs-ZaluszchxAw'; // Substitua com o ID da sua planilha
+      const scriptURL = `https://script.google.com/macros/s/AKfycbzcJtLFaQq-IOpFJNvZjt3SiovS81baesJZTpZqSvmWmuU81KtitSUmmOAbqsOGjSqv/exec`;
 
     fetch(scriptURL, {
       method: 'POST',
