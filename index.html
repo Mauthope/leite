@@ -78,22 +78,22 @@
       <label for="dataVisita">Data da Visita:</label>
       <input type="date" id="dataVisita" name="dataVisita" required>
       
-      <label for="producaoLeite">Produção de Leite (L):</label>
+      <label for="producaoLeite">Gordura:</label>
       <input type="number" id="producaoLeite" name="producaoLeite" required>
 
-      <label for="vacasLactacao">Número de Vacas em Lactação:</label>
+      <label for="vacasLactacao">Proteína:</label>
       <input type="number" id="vacasLactacao" name="vacasLactacao" required>
 
-      <label for="quantPrimiparas">Quantidade de Primíparas:</label>
+      <label for="quantPrimiparas">Lactose:</label>
       <input type="number" id="quantPrimiparas" name="quantPrimiparas" required>
 
-      <label for="mediaLeite">Média de Leite (L):</label>
+      <label for="mediaLeite">Solidos</label>
       <input type="number" id="mediaLeite" name="mediaLeite" step="0.1" required>
 
-      <label for="delMedio">Del Médio (dias):</label>
+      <label for="delMedio">Ureia:</label>
       <input type="number" id="delMedio" name="delMedio" required>
 
-      <label for="tmrComposicao">TMR Composição:</label>
+      <label for="tmrComposicao">CCS:</label>
       <input type="text" id="tmrComposicao" name="tmrComposicao" required>
 
 
@@ -112,21 +112,9 @@
         vacasLactacao: document.getElementById('vacasLactacao').value,
         quantPrimiparas: document.getElementById('quantPrimiparas').value,
         mediaLeite: document.getElementById('mediaLeite').value,
-        lote1: document.getElementById('lote1').value,
-        lote2: document.getElementById('lote2').value,
-        lote3: document.getElementById('lote3').value,
         delMedio: document.getElementById('delMedio').value,
         tmrComposicao: document.getElementById('tmrComposicao').value,
-        kgSilagem: document.getElementById('kgSilagem').value,
-        kgFeno: document.getElementById('kgFeno').value,
-        kgPreSecado: document.getElementById('kgPreSecado').value,
-        kgRacao: document.getElementById('kgRacao').value,
-        sobrasCoxo: document.getElementById('sobrasCoxo').value,
-        tempoSilagem: document.getElementById('tempoSilagem').value,
-        vacasPreParto: document.getElementById('vacasPreParto').value,
-        dietaPreParto: document.getElementById('dietaPreParto').value,
-        escoreCocho: document.getElementById('escoreCocho').value,
-        escoreCorporal: document.getElementById('escoreCorporal').value,
+        
       };
 
       const storedData = JSON.parse(localStorage.getItem('formData')) || [];
@@ -176,21 +164,8 @@
         vacasLactacao: document.getElementById('vacasLactacao').value,
         quantPrimiparas: document.getElementById('quantPrimiparas').value,
         mediaLeite: document.getElementById('mediaLeite').value,
-        lote1: document.getElementById('lote1').value,
-        lote2: document.getElementById('lote2').value,
-        lote3: document.getElementById('lote3').value,
         delMedio: document.getElementById('delMedio').value,
         tmrComposicao: document.getElementById('tmrComposicao').value,
-        kgSilagem: document.getElementById('kgSilagem').value,
-        kgFeno: document.getElementById('kgFeno').value,
-        kgPreSecado: document.getElementById('kgPreSecado').value,
-        kgRacao: document.getElementById('kgRacao').value,
-        sobrasCoxo: document.getElementById('sobrasCoxo').value,
-        tempoSilagem: document.getElementById('tempoSilagem').value,
-        vacasPreParto: document.getElementById('vacasPreParto').value,
-        dietaPreParto: document.getElementById('dietaPreParto').value,
-        escoreCocho: document.getElementById('escoreCocho').value,
-        escoreCorporal: document.getElementById('escoreCorporal').value,
       };
 
       // Armazenar os dados offline e enviar para o Google Sheets
