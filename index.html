@@ -90,109 +90,18 @@
       <label for="mediaLeite">Média de Leite (L):</label>
       <input type="number" id="mediaLeite" name="mediaLeite" step="0.1" required>
 
-      <fieldset>
-        <legend>Lotes</legend>
-        <label for="lote1">Lote 1 (quantas vacas):</label>
-        <input type="number" id="lote1" name="lote1" required>
-
-        <label for="lote2">Lote 2 (quantas vacas):</label>
-        <input type="number" id="lote2" name="lote2" required>
-
-        <label for="lote3">Lote 3 (quantas vacas):</label>
-        <input type="number" id="lote3" name="lote3" required>
-      </fieldset>
-
       <label for="delMedio">Del Médio (dias):</label>
       <input type="number" id="delMedio" name="delMedio" required>
 
       <label for="tmrComposicao">TMR Composição:</label>
       <input type="text" id="tmrComposicao" name="tmrComposicao" required>
 
-      <label for="kgSilagem">Quantos kg de Silagem:</label>
-      <input type="number" id="kgSilagem" name="kgSilagem" step="0.1" required>
-
-      <label for="kgFeno">Quantos kg de Feno:</label>
-      <input type="number" id="kgFeno" name="kgFeno" step="0.1" required>
-
-      <label for="kgPreSecado">Quantos kg de Pré-secado:</label>
-      <input type="number" id="kgPreSecado" name="kgPreSecado" step="0.1" required>
-
-      <label for="kgRacao">Quantos kg de Ração:</label>
-      <input type="number" id="kgRacao" name="kgRacao" step="0.1" required>
-
-      <label for="sobrasCoxo">Quantidade de Sobras no Cocho:</label>
-      <input type="number" id="sobrasCoxo" name="sobrasCoxo" step="0.1" required>
-
-      <label for="tempoSilagem">Tempo disponível de Silagem, Feno e Pré-secado (dias):</label>
-      <input type="number" id="tempoSilagem" name="tempoSilagem" required>
-
-      <label for="vacasPreParto">Número de Vacas em Pré-parto:</label>
-      <input type="number" id="vacasPreParto" name="vacasPreParto" required>
-
-      <label for="dietaPreParto">Dieta no Pré-parto:</label>
-      <select id="dietaPreParto" name="dietaPreParto" required>
-        <option value="sim">Sim</option>
-        <option value="nao">Não</option>
-      </select>
-
-      <label for="escoreCocho">Escore de Cocho:</label>
-      <input type="number" id="escoreCocho" name="escoreCocho" step="0.1" required>
-
-      <label for="escoreCorporal">Escore Condição Corporal:</label>
-      <input type="number" id="escoreCorporal" name="escoreCorporal" step="0.1" required>
-
-      <!-- Campo para localização -->
-      <label>Localização da Propriedade:</label>
-      <button type="button" id="getLocation">Adicionar Localização</button>
-      <div id="map"></div>
 
       <button type="submit">Enviar</button>
     </form>
   </div>
 
   <script>
-    const getLocationButton = document.getElementById('getLocation');
-    const mapDiv = document.getElementById('map');
-
-    getLocationButton.addEventListener('click', () => {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition, showError);
-      } else {
-        alert('Geolocalização não é suportada pelo seu navegador.');
-      }
-    });
-
-    function showPosition(position) {
-      const latitude = position.coords.latitude;
-      const longitude = position.coords.longitude;
-
-      // Exibe o mapa
-      mapDiv.style.display = 'block';
-      mapDiv.innerHTML = `<iframe 
-        width="100%" 
-        height="100%" 
-        frameborder="0" 
-        style="border:0" 
-        src="https://www.google.com/maps?q=${latitude},${longitude}&z=15&output=embed">
-      </iframe>`;
-    }
-
-    function showError(error) {
-      switch (error.code) {
-        case error.PERMISSION_DENIED:
-          alert('Usuário negou a permissão de localização.');
-          break;
-        case error.POSITION_UNAVAILABLE:
-          alert('Informações de localização estão indisponíveis.');
-          break;
-        case error.TIMEOUT:
-          alert('A requisição de localização demorou muito.');
-          break;
-        case error.UNKNOWN_ERROR:
-          alert('Ocorreu um erro desconhecido.');
-          break;
-      }
-    }
 
     // Função para armazenar os dados no localStorage
     function saveFormData() {
@@ -224,20 +133,6 @@
       storedData.push(formData);
       localStorage.setItem('formData', JSON.stringify(storedData));
     }
-
-    // Função para enviar os dados para o Google Sheets (via API)
-  // Função para enviar os dados para o Google Sheets (via API)
-function sendToGoogleSheets(formData) {
-  // Verifica se a geolocalização está disponível
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(function(position) {
-      // Obtém as coordenadas
-      const latitude = position.coords.latitude;
-      const longitude = position.coords.longitude;
-
-      // Adiciona as coordenadas ao objeto formData
-      formData.latitude = latitude;
-      formData.longitude = longitude;
 
       // ID da planilha e URL do script do Google Apps
       const sheetID = '1ysRrJUGmRdhtdDnIYnfgqjjHlOKJcfs-ZaluszchxAw'; // Substitua com o ID da sua planilha
